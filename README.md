@@ -1,6 +1,6 @@
-# Digital Business Enablement
+# TechBridge
 
-Uma API para o sistema de avaliação de empresas e negócios.
+Uma API para o sistema de avaliação de empresas e negócios feita para avaliação da disciplina Digital Business Enablement.
 
 ## Endpoints
 - Conta
