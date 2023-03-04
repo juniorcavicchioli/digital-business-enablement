@@ -1,6 +1,6 @@
 # TechBridge
 
-Uma API para o sistema de avaliação de empresas e negócios feita para avaliação da disciplina Digital Business Enablement.
+Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida para avaliação da disciplina Digital Business Enablement.
 
 ## Endpoints
 - Conta
@@ -303,3 +303,16 @@ contaId | inteiro | sim | ID da conta que está julgando
 |-|-
 |200| Avaliação julgada
 |200| Julgamento removido
+
+## Autores
+
+__Adilson Roberto Cavicchioli Junior__
+
+LinkedIn: [@Adilson](https://www.linkedin.com/in/adilson-roberto-cavicchioli-junior-6816b7192?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BIpMh5bVEQOi82%2FRHJ6oxkg%3D%3D) <br>
+Email: [cavicchioli.adilson@gmail.com](mailto:cavicchioli.adilson@gmail.com) <br>
+GitHub: [@juniorcavicchioli](https://github.com/juniorcavicchioli?tab=repositories) <br>
+
+__Lucas Sabonaro Gonzalez__
+
+LinkedIn: [@Lucas](https://www.linkedin.com/in/lucas-sabonaro-gonzalez/) <br>
+GitHub: [@LucasSGonzalez](https://github.com/LucasSGonzalez)
