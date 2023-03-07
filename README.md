@@ -27,30 +27,27 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 | email | texto | sim | email da conta|
 | senha | texto | sim | senha da conta|
 | nome | texto | sim | nome do usuário|
-| contaId | inteiro | sim | id da conta|
 
 *Exemplo de requisição*
-```
+```json
 {
-    email: 'exemplo@exemplo.com',
-    senha: '123456789',
-    senhaConfirmar: '123456789',
-    nome: 'Fulano',
-    contaId: 1
+    email: "exemplo@exemplo.com",
+    senha: "123456789",
+    senhaConfirmar: "123456789",
+    nome: "Fulano",
 }
 ```
 
 *Resposta*
-| código | descrição 
-|-|-
-|201| o usuário foi cadastrado
-|400| email inválido
-|400| senhas inválidas
-|400| senhas não coincidem
+| código | descrição | exemplo de resposta
+|-|-|-|
+|201| Usuário cadastrado com sucesso| `{"mensagem": "Usuário cadastrado com sucesso"}`
+|400| Dados inválidos|
+|500| Erro interno do servidor|
 
 ### Log in
 ---
-`GET` /techbridge/api/conta/login
+`POST` /techbridge/api/conta/login
 
 *Campos de requisição*
 
@@ -62,7 +59,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 *Exemplo de requisição*
 ```
 {
-    email: 'exemplo@exemplo.com',
+    email: "exemplo@exemplo.com",
     senha: 123456789
 }
 ```
@@ -70,26 +67,24 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 *Resposta*
 | código | descrição 
 |-|-
-|200| dados de login encontrados e validados
-|400| email inválido
-|401| conta não encontrada
+|200| Dados de login encontrados e validados
+|400| Dados inválidos
+|401| Conta não encontrada
 
 ### Excluir conta
 ---
-`DELETE` /techbridge/api/conta/excluir
+`DELETE` /techbridge/api/conta/{contaId}
 
 *Campos de requisição*
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-|contaId| inteiro | sim | id da conta|
 |senha | texto | sim | senha da conta|
 
 *Exemplo de requisição*
 ```
 {
-    contaId: 1,
-    senha: '123456789'
+    senha: "123456789"
 }
 ```
 
@@ -102,7 +97,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 ### Detalhes conta
 ---
 
-`GET` /techbridge/api/conta/{id}
+`GET` /techbridge/api/conta/{contaId}
 
 *Campos de requisição*
 
@@ -110,11 +105,15 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 | - |-|:-:|-|
 |contaId| inteiro | sim | id da conta|
 
-*Exemplo de resposta*
+*Exemplo de requisição*
 ```
+    /techbridge/api/conta/1
+```
+*Exemplo de resposta*
+```json
 {
-    email: 'exemplo@exemplo.com',
-    nome: 'Fulano',
+    email: "exemplo@exemplo.com",
+    nome: "Fulano",
     contaId: 1
 }
 ```
@@ -122,8 +121,8 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 *Resposta*
 | código | descrição 
 |-|-
-|200| os dados foram retornados |
-|404| nao foi encontrada uma conta com esse ID |
+|200| Os dados foram retornados |
+|404| Nao foi encontrada uma conta com esse ID |
 
 ### Cadastrar empresa
 ---
@@ -138,25 +137,37 @@ nome | texto | nao | nome oficial da empresa
 ramo | texto | sim | ramo de atuação da empresa
 CNPJ | texto | nao | CNPJ da empresa
 endereco | texto | nao | endereco da empresa
-empresaId | inteiro | sim | ID da empresa
+
+O campo `empresaId` será gerado automaticamente.
 
 *Exemplo de requisição*
-```
+```json
 {
-    razaoSocial: 'The Code of Duty',
-    nome: 'Techbridge LTDA'
-    ramo: 'Consultoria de TI',
-    CNPJ: '12.345.678/0001-00',
-    endereco: 'Rua Advanced Warfare, 1, São Paulo-SP, 12345-123',
-    empresaId: 2
+    razaoSocial: "The Code of Duty",
+    nome: "Techbridge LTDA"
+    ramo: "Consultoria de TI",
+    CNPJ: "12.345.678/0001-00",
+    endereco: "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
+}
+```
+
+*Exemplo de requisição completa*
+```json
+{
+    razaoSocial: "The Code of Duty",
+    ramo: "Consultoria de TI",
+    nome: "Techbridge LTDA",
+    CNPJ: "12.345.678/0001-00",
+    endereco: "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
 }
 ```
 
 *Resposta*
-| código | descrição 
-|-|-
-|201| empresa cadastrada
-|400| empresa já cadastrada
+| código | descrição | exemplo de resposta
+|-|-|-|
+|201| Empresa cadastrada com sucesso| `{"mensagem": "Empresa cadastrada com sucesso"}`
+|400| Empresa já cadastrada ou dados inválidos| `{"mensagem": "Erro de validação: CNPJ inválido"}`
+|500| Erro interno do servidor| `{"mensagem": "Erro interno do servidor"}`
 
 ### Detalhes empresa
 ---
@@ -170,16 +181,16 @@ empresaId | inteiro | sim | ID da empresa
 |empresaId| inteiro | sim | id da empresa|
 
 *Exemplo de resposta*
-```
+```json
 {
-    razaoSocial: 'The Code of Duty',
-    nome: 'Techbridge LTDA'
-    ramo: 'Consultoria de TI',
-    CNPJ: '12.345.678/0001-00',
-    endereco: 'Rua Advanced Warfare, 1, São Paulo-SP, 12345-123',
+    razaoSocial: "The Code of Duty",
+    ramo: "Consultoria de TI",
+    endereco: "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123",
     empresaId: 2
 }
 ```
+
+Caso o nome ou CNPJ da empresa estejam disponíveis, o servidor também os retornará na resposta. Porém, a requisição pode ser feita sem eles, pois não são campos obrigatórios.
 
 *Resposta*
 | código | descrição 
@@ -197,47 +208,46 @@ empresaId | inteiro | sim | ID da empresa
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
 contaId | inteiro | sim | ID da conta que está avaliando
-nota | inteiro | sim | avaliação do usuário sobre a empresa
+nota | inteiro | sim | nota da avaliação (entre 1 e 5)
 comentario | texto | nao | justificativa para a nota dada pelo usuário
 empresaId | inteiro | sim | ID da empresa avaliada
 julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários
-avaliacaoId| inteiro | sim | ID da avaliação
+
+O campo `avaliacaoId` é do tipo inteiro e obrigatório. Ele é gerado automaticamente.
 
 *Exemplo de requisição*
 ```
 {
     contaId: 1,
     nota: 4,
-    comentario: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+    comentario: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
     empresaId: 2,
     julgamento: 0,
-    avaliacaoId: 3
 }
 ```
 
 *Resposta*
 | código | descrição 
 |-|-
-|201| o usuário foi cadastrado
-|400| campos obrigatórios não preenchidos|
-|401| usuário já possui uma avaliação feita
+|201| Avaliação criada com sucesso.
+|400| Campos obrigatórios não preenchidos ou valores inválidos
+|401| Usuário já avaliou essa empresa
+|500| Erro interno do servidor
 
 ### Excluir avaliacao
 ---
-`DELETE` /techbridge/api/avaliacao/excluir
+`DELETE` /techbridge/api/avaliacao/{avaliacaoId}
 
 *Campos de requisição*
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
 |contaId| inteiro | sim | id da conta|
-|avaliacaoId| inteiro | sim | id da avaliação
 
 *Exemplo de requisição*
 ```
 {
     contaId: 1,
-    avaliacaoId: 3
 }
 ```
 
@@ -245,28 +255,31 @@ avaliacaoId| inteiro | sim | ID da avaliação
 | código | descrição 
 |-|-
 |200| avaliação apagada
-|401| usuário não autorizado a apagar avaliação
+|401| Usuário não é o autor da avaliação e não tem permissão para apagá-la
 
 ### Editar avaliacao
 
-`PUT` /techbridge/api/avaliacao/editar
+`PUT` /techbridge/api/avaliacao/{avaliacaoId}
 
 *Campos de requisição*
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-avaliacaoId| inteiro | sim | ID da avaliação
-contaId | inteiro | sim | ID da conta que está avaliando
-novoComentario | texto | nao | nova justificativa para a nota dada pelo usuário
-novaNota | inteiro | nao | nova avaliação do usuário sobre a empresa
+avaliacaoId|inteiro|sim|ID da avaliação que será editada
+contaId | inteiro | sim | ID da conta dona da avaliação
+nota | inteiro | sim | nota da avaliação (entre 1 e 5)
+comentario | texto | nao | justificativa para a nota dada pelo usuário
+empresaId | inteiro | sim | ID da empresa avaliada
+julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários. Ele é mantido o mesmo de antes da edição.
 
 *Exemplo de requisição*
-```
+```json
 {
-    avaliacaoId: 3,
     contaId: 1,
-    novoComentario: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
-    novaNota: 5
+    nota: 5,
+    comentario: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+    empresaId: 2,
+    julgamento: 0,
 }
 ```
 
@@ -281,7 +294,7 @@ novaNota | inteiro | nao | nova avaliação do usuário sobre a empresa
 ---
 Aumenta ou diminui o julgamento de uma avaliação
 
-`PUT` /techbridge/api/avaliacao/julgar
+`PUT` /techbridge/api/avaliacao/{avaliacaoId}/{contaId}
 
 *Campos de requisição*
 
@@ -289,20 +302,19 @@ Aumenta ou diminui o julgamento de uma avaliação
 | - |-|:-:|-|
 avaliacaoId| inteiro | sim | ID da avaliação que está sendo julgada
 contaId | inteiro | sim | ID da conta que está julgando
+aumentar| boolean | sim | Indica se o julgamento deve ser aumentado (`true`) ou diminuído (`false`). Note que o aumento ou diminuição se refere à contagem total de julgamentos da avaliação, e não à avaliação em si.
 
 *Exemplo de requisição*
-```
+```json
 {
-    avaliacaoId: 3,
-    contaId: 1,
+    aumentar: true
 }
 ```
 
 *Resposta*
-| código | descrição 
-|-|-
-|200| Avaliação julgada
-|200| Julgamento removido
+| código | descrição | exemplo de mensagem de reposta
+|-|-|-|
+|200| Julgamento aumentado ou diminuido com sucesso.| `{mensagem: "Julgamento aumentado com sucesso"}`
 
 ## Autores
 
