@@ -57,7 +57,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 | senha | texto | sim | senha da conta|
 
 *Exemplo de requisição*
-```
+```json
 {
     email: "exemplo@exemplo.com",
     senha: 123456789
@@ -82,7 +82,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 |senha | texto | sim | senha da conta|
 
 *Exemplo de requisição*
-```
+```json
 {
     senha: "123456789"
 }
@@ -216,7 +216,7 @@ julgamento | inteiro | sim | Status atual da avaliação julgada por outros usu�
 O campo `avaliacaoId` é do tipo inteiro e obrigatório. Ele é gerado automaticamente.
 
 *Exemplo de requisição*
-```
+```json
 {
     contaId: 1,
     nota: 4,
@@ -245,7 +245,7 @@ O campo `avaliacaoId` é do tipo inteiro e obrigatório. Ele é gerado automatic
 |contaId| inteiro | sim | id da conta|
 
 *Exemplo de requisição*
-```
+```json
 {
     contaId: 1,
 }
