@@ -8,6 +8,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
     - [Log in](#log-in)
     - [Excluir conta](#excluir-conta)
     - [Detalhes](#detalhes-conta)
+    - [Listar](#listar-contas)
 - Empresa
     - [Cadastrar](#cadastrar-empresa)
     - [Detalhes](#detalhes-empresa)
@@ -18,6 +19,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
     - [Julgar](#julgar-avaliacao)
 ### Sign up
 ---
+
 `POST` /techbridge/api/conta
 
 *Campos de requisição*
@@ -27,14 +29,14 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 | email | texto | sim | email da conta|
 | senha | texto | sim | senha da conta|
 | nome | texto | sim | nome do usuário|
-
+| id | longo | --- | Gerado automaticamente quando aconta é criada|
 *Exemplo de requisição*
 ```json
 {
-    email: "exemplo@exemplo.com",
-    senha: "123456789",
-    senhaConfirmar: "123456789",
-    nome: "Fulano",
+  "email": "exemplo@exemplo.com",
+  "senha": "123456789",
+  "senhaConfirmar": "123456789",
+  "nome": "Fulano"
 }
 ```
 
@@ -59,8 +61,8 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 *Exemplo de requisição*
 ```json
 {
-    email: "exemplo@exemplo.com",
-    senha: 123456789
+    "email": "exemplo@exemplo.com",
+    "senha": 123456789
 }
 ```
 
@@ -80,11 +82,12 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
 |senha | texto | sim | senha da conta|
+|contaId| longo | sim | ID da conta a ser apagada no path|
 
 *Exemplo de requisição*
 ```json
 {
-    senha: "123456789"
+    "senha": "123456789"
 }
 ```
 
@@ -103,7 +106,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-|contaId| inteiro | sim | id da conta|
+|contaId| longo | sim | id da conta|
 
 *Exemplo de requisição*
 ```
@@ -112,9 +115,9 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 *Exemplo de resposta*
 ```json
 {
-    email: "exemplo@exemplo.com",
-    nome: "Fulano",
-    contaId: 1
+    "email": "exemplo@exemplo.com",
+    "nome": "Fulano",
+    "contaId": 1
 }
 ```
 
@@ -123,6 +126,28 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 |-|-
 |200| Os dados foram retornados |
 |404| Nao foi encontrada uma conta com esse ID |
+
+### Listar contas
+---
+Lista todas as contas cadastradas
+
+`GET` /techbridge/api/conta
+
+*Exemplo de resposta*
+```json
+{
+    "email": "exemplo@exemplo.com",
+    "senha": "123456789",
+    "nome": "Fulano",
+    "id": 1
+}
+{
+    "email": "outlook@outlook.com",
+    "senha": "987654321",
+    "nome": "Ciclano",
+    "id": 2
+}
+```
 
 ### Cadastrar empresa
 ---
@@ -143,22 +168,22 @@ O campo `empresaId` será gerado automaticamente.
 *Exemplo de requisição*
 ```json
 {
-    razaoSocial: "The Code of Duty",
-    nome: "Techbridge LTDA"
-    ramo: "Consultoria de TI",
-    CNPJ: "12.345.678/0001-00",
-    endereco: "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
+  "razaoSocial": "The Code of Duty",
+  "nome": "Techbridge LTDA",
+  "ramo": "Consultoria de TI",
+  "CNPJ": "12.345.678/0001-00",
+  "endereco": "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
 }
 ```
 
 *Exemplo de requisição completa*
 ```json
 {
-    razaoSocial: "The Code of Duty",
-    ramo: "Consultoria de TI",
-    nome: "Techbridge LTDA",
-    CNPJ: "12.345.678/0001-00",
-    endereco: "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
+  "razaoSocial": "The Code of Duty",
+  "ramo": "Consultoria de TI",
+  "nome": "Techbridge LTDA",
+  "CNPJ": "12.345.678/0001-00",
+  "endereco": "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
 }
 ```
 
@@ -178,15 +203,15 @@ O campo `empresaId` será gerado automaticamente.
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-|empresaId| inteiro | sim | id da empresa|
+|empresaId| longo | sim | id da empresa|
 
 *Exemplo de resposta*
 ```json
 {
-    razaoSocial: "The Code of Duty",
-    ramo: "Consultoria de TI",
-    endereco: "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123",
-    empresaId: 2
+  "razaoSocial": "The Code of Duty",
+  "ramo": "Consultoria de TI",
+  "endereco": "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123",
+  "empresaId": 2
 }
 ```
 
@@ -207,22 +232,22 @@ Caso o nome ou CNPJ da empresa estejam disponíveis, o servidor também os retor
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-contaId | inteiro | sim | ID da conta que está avaliando
+contaId | longo | sim | ID da conta que está avaliando
 nota | inteiro | sim | nota da avaliação (entre 1 e 5)
 comentario | texto | nao | justificativa para a nota dada pelo usuário
-empresaId | inteiro | sim | ID da empresa avaliada
-julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários
+empresaId | longo | sim | ID da empresa avaliada
+julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários. Valor inicial é 0.
 
-O campo `avaliacaoId` é do tipo inteiro e obrigatório. Ele é gerado automaticamente.
+O campo `avaliacaoId` é do tipo longo e obrigatório. Ele é gerado automaticamente.
 
 *Exemplo de requisição*
 ```json
 {
-    contaId: 1,
-    nota: 4,
-    comentario: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-    empresaId: 2,
-    julgamento: 0,
+  "contaId": 1,
+  "nota": 4,
+  "comentario": "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+  "empresaId": 2,
+  "julgamento": 0
 }
 ```
 
@@ -242,12 +267,12 @@ O campo `avaliacaoId` é do tipo inteiro e obrigatório. Ele é gerado automatic
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-|contaId| inteiro | sim | id da conta|
+|contaId| longo | sim | id da conta|
 
 *Exemplo de requisição*
 ```json
 {
-    contaId: 1,
+    "contaId": 1,
 }
 ```
 
@@ -265,21 +290,21 @@ O campo `avaliacaoId` é do tipo inteiro e obrigatório. Ele é gerado automatic
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-avaliacaoId|inteiro|sim|ID da avaliação que será editada
-contaId | inteiro | sim | ID da conta dona da avaliação
+avaliacaoId| longo |sim|ID da avaliação que será editada
+contaId | longo | sim | ID da conta dona da avaliação
 nota | inteiro | sim | nota da avaliação (entre 1 e 5)
 comentario | texto | nao | justificativa para a nota dada pelo usuário
-empresaId | inteiro | sim | ID da empresa avaliada
+empresaId | longo | sim | ID da empresa avaliada
 julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários. Ele é mantido o mesmo de antes da edição.
 
 *Exemplo de requisição*
 ```json
 {
-    contaId: 1,
-    nota: 5,
-    comentario: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-    empresaId: 2,
-    julgamento: 0,
+  "contaId": 1,
+  "nota": 5,
+  "comentario": "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+  "empresaId": 2,
+  "julgamento": 0
 }
 ```
 
@@ -300,21 +325,21 @@ Aumenta ou diminui o julgamento de uma avaliação
 
 | campo | tipo | obrigatório | descrição|
 | - |-|:-:|-|
-avaliacaoId| inteiro | sim | ID da avaliação que está sendo julgada
-contaId | inteiro | sim | ID da conta que está julgando
+avaliacaoId| longo | sim | ID da avaliação que está sendo julgada
+contaId | longo | sim | ID da conta que está julgando
 aumentar| boolean | sim | Indica se o julgamento deve ser aumentado (`true`) ou diminuído (`false`). Note que o aumento ou diminuição se refere à contagem total de julgamentos da avaliação, e não à avaliação em si.
 
 *Exemplo de requisição*
 ```json
 {
-    aumentar: true
+    "aumentar": true
 }
 ```
 
 *Resposta*
 | código | descrição | exemplo de mensagem de reposta
 |-|-|-|
-|200| Julgamento aumentado ou diminuido com sucesso.| `{mensagem: "Julgamento aumentado com sucesso"}`
+|200| Julgamento aumentado ou diminuido com sucesso.| `{"mensagem": "Julgamento aumentado com sucesso"}`
 
 ## Autores
 
