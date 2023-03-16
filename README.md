@@ -9,6 +9,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
     - [Excluir conta](#excluir-conta)
     - [Detalhes](#detalhes-conta)
     - [Listar](#listar-contas)
+    - [Editar](#editar)
 - Empresa
     - [Cadastrar](#cadastrar-empresa)
     - [Detalhes](#detalhes-empresa)
@@ -148,6 +149,33 @@ Lista todas as contas cadastradas
     "id": 2
 }
 ```
+
+### Editar
+
+`PUT`/techbridge/api/conta/{id}
+
+*Campos de requisição*
+
+| campo | tipo | obrigatório | descrição|
+| - |-|:-:|-|
+| email | texto | sim | email da conta|
+| senha | texto | sim | senha da conta|
+| nome | texto | sim | nome do usuário|
+| id | longo | --- | ID da conta a ser editada. Atributo do path|
+*Exemplo de requisição*
+```json
+{
+  "email": "exemplo@exemplo.com",
+  "senha": "123456789",
+  "nome": "Fulano"
+}
+
+*Resposta*
+| código | descrição | exemplo de resposta
+|-|-|-|
+|200| Conta editada com sucesso| `{"mensagem": "Conta editada."}`
+|404| Conta não encontrada| `{"mensagem": "Conta não encontrada"}`
+|500| Erro interno do servidor| `{"mensagem": "Erro interno do servidor"}`
 
 ### Cadastrar empresa
 ---
