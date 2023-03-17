@@ -13,6 +13,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 - Empresa
     - [Cadastrar](#cadastrar-empresa)
     - [Detalhes](#detalhes-empresa)
+    - Listar
 - Avaliação
     - [Criar](#criar-avaliacao)
     - [Excluir](#excluir-avaliacao)
@@ -169,7 +170,7 @@ Lista todas as contas cadastradas
   "senha": "123456789",
   "nome": "Fulano"
 }
-
+```
 *Resposta*
 | código | descrição | exemplo de resposta
 |-|-|-|
