@@ -1,6 +1,9 @@
 package br.com.fiap.techbridge.models;
 
-public class Conta {
+import br.com.fiap.techbridge.interfaces.IModel;
+
+public class Conta implements IModel{
+    private Long id;
     private String email;
     private String senha;
     private String nome;
@@ -35,6 +38,15 @@ public class Conta {
         this.nome = nome;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     @Override
     public String toString() {
         return "Conta [email=" + email + ", senha=" + senha + ", nome=" + nome + "]";

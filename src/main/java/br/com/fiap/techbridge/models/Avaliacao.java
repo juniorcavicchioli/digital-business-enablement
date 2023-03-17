@@ -1,24 +1,35 @@
 package br.com.fiap.techbridge.models;
 
-public class Avaliacao {
-    private int contaId;
+import br.com.fiap.techbridge.interfaces.IModel;
+
+public class Avaliacao implements IModel{
+    private Long id;
+    private Long contaId;
     private int nota;
     private String comentario;
-    private int empresaId;
+    private Long empresaId;
     private int julgamento;
     
-    public Avaliacao(int contaId, int nota, int empresaId, int julgamento) {
+    public Avaliacao(Long contaId, int nota, Long empresaId) {
         this.contaId = contaId;
         this.nota = nota;
         this.empresaId = empresaId;
-        this.julgamento = julgamento;
+        this.julgamento = 0;
     }
 
-    public int getContaId() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getContaId() {
         return contaId;
     }
 
-    public void setContaId(int contaId) {
+    public void setContaId(Long contaId) {
         this.contaId = contaId;
     }
 
@@ -38,11 +49,11 @@ public class Avaliacao {
         this.comentario = comentario;
     }
 
-    public int getEmpresaId() {
+    public Long getEmpresaId() {
         return empresaId;
     }
 
-    public void setEmpresaId(int empresaId) {
+    public void setEmpresaId(Long empresaId) {
         this.empresaId = empresaId;
     }
 
@@ -56,7 +67,7 @@ public class Avaliacao {
 
     @Override
     public String toString() {
-        return "Avaliacao [contaId=" + contaId + ", nota=" + nota + ", comentario=" + comentario + ", empresaId="
+        return "Avaliacao [id=" + id + ", contaId=" + contaId + ", nota=" + nota + ", comentario=" + comentario + ", empresaId="
                 + empresaId + ", julgamento=" + julgamento + "]";
     }
 

@@ -1,6 +1,9 @@
 package br.com.fiap.techbridge.models;
 
-public class Empresa {
+import br.com.fiap.techbridge.interfaces.IModel;
+
+public class Empresa implements IModel{
+    private Long id;
     private String razaoSocial;
     private String nome;
     private String ramo;
@@ -10,6 +13,15 @@ public class Empresa {
     public Empresa(String razaoSocial, String ramo) {
         this.razaoSocial = razaoSocial;
         this.ramo = ramo;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRazaoSocial() {
@@ -54,7 +66,7 @@ public class Empresa {
 
     @Override
     public String toString() {
-        return "Empresa [razaoSocial=" + razaoSocial + ", nome=" + nome + ", ramo=" + ramo + ", CNPJ=" + CNPJ
+        return "Empresa [id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", ramo=" + ramo + ", CNPJ=" + CNPJ
                 + ", endereco=" + endereco + "]";
     }
 }
