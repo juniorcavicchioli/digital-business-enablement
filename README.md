@@ -169,7 +169,7 @@ Lista todas as contas cadastradas
   "senha": "123456789",
   "nome": "Fulano"
 }
-
+```
 *Resposta*
 | código | descrição | exemplo de resposta
 |-|-|-|
