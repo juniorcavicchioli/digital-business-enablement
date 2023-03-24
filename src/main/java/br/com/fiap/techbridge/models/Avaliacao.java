@@ -1,15 +1,24 @@
 package br.com.fiap.techbridge.models;
 
-import br.com.fiap.techbridge.interfaces.IModel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-public class Avaliacao implements IModel{
+@Entity
+public class Avaliacao{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private Long contaId;
     private int nota;
     private String comentario;
     private Long empresaId;
     private int julgamento;
     
+    public Avaliacao(){}
+
     public Avaliacao(Long contaId, int nota, Long empresaId) {
         this.contaId = contaId;
         this.nota = nota;
