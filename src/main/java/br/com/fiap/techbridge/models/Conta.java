@@ -1,12 +1,20 @@
 package br.com.fiap.techbridge.models;
 
-import br.com.fiap.techbridge.interfaces.IModel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-public class Conta implements IModel{
+@Entity
+public class Conta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String senha;
     private String nome;
+    
+    protected Conta(){}
     
     public Conta(String email, String senha, String nome) {
         this.email = email;
@@ -38,7 +46,6 @@ public class Conta implements IModel{
         this.nome = nome;
     }
 
-    @Override
     public Long getId() {
         return id;
     }

@@ -1,8 +1,14 @@
 package br.com.fiap.techbridge.models;
 
-import br.com.fiap.techbridge.interfaces.IModel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-public class Empresa implements IModel{
+@Entity
+public class Empresa{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String razaoSocial;
     private String nome;
@@ -10,12 +16,13 @@ public class Empresa implements IModel{
     private String CNPJ;
     private String endereco;
 
+    public Empresa(){}
+    
     public Empresa(String razaoSocial, String ramo) {
         this.razaoSocial = razaoSocial;
         this.ramo = ramo;
     }
 
-    @Override
     public Long getId() {
         return id;
     }
