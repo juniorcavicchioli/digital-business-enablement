@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.techbridge.models.Conta;
 import br.com.fiap.techbridge.repository.ContaRepository;
-import br.com.fiap.techbridge.utils.ControllerUtils;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("techbridge/api/conta")
@@ -32,11 +34,12 @@ public class ContaController {
     
     // Sign up - CREATE
     @PostMapping()
-    public ResponseEntity<Conta> signup(@RequestBody Conta conta){
+    public ResponseEntity<Conta> signup(@RequestBody @Valid Conta conta, BindingResult result){
         log.info("cadastrando conta: " + conta);
-        if (conta.getSenha().isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        
+        // if (result.hasErrors()) {
+        //     log.error("Erro de validação");
+        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        // }
         repository.save(conta);
         return ResponseEntity.status(HttpStatus.CREATED).body(conta);
     }
@@ -69,9 +72,10 @@ public class ContaController {
     @GetMapping("{id}")
     public ResponseEntity<?> details(@PathVariable Long id){
         log.info("buscar conta " + id);
-        var contaEncontrada = repository.findById(id);
+        var contaEncontrada = repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "conta não encontrada"));
         
-        return ControllerUtils.idExiste(contaEncontrada);
+        return ResponseEntity.ok(contaEncontrada);
     }
     
     // LISTAR
@@ -83,10 +87,8 @@ public class ContaController {
     // EDITAR
     @PutMapping("{id}")
     public ResponseEntity<Conta> update(@PathVariable Long id, @RequestBody Conta conta){
-        var contaEncontrada = repository.findById(id);
-        if (contaEncontrada.isEmpty())
-            return ResponseEntity.notFound().build();
-
+        repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "conta não encontrada"));
         conta.setId(id);
         repository.save(conta); // se aquela entidade já existe com aquele id, ele faz um update
         return ResponseEntity.ok(conta);

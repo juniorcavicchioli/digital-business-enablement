@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import br.com.fiap.techbridge.interfaces.IModel;
 
+@Deprecated
 public class ControllerUtils {
     
     @Deprecated
@@ -16,6 +17,7 @@ public class ControllerUtils {
         .findFirst();
     }
 
+    @Deprecated
     public static ResponseEntity<?> idExiste(Optional<?> clazz){
         if (!clazz.isPresent())
             return ResponseEntity.notFound().build();
