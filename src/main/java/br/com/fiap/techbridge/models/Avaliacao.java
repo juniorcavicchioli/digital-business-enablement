@@ -13,13 +13,14 @@ public class Avaliacao{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotNull(message = "O id da conta que está avaliando é obrigatório")
     private Long contaId;
-    @NotNull
-    @Min(1) @Max(5)
+    @NotNull(message = "A nota deve ter um valor entre 1 e 5")
+    @Min(value=1, message = "A nota deve ter um valor entre 1 e 5")
+    @Max(value=5, message = "A nota deve ter um valor entre 1 e 5")
     private int nota;
     private String comentario;
-    @NotNull
+    @NotNull(message = "O id da empresa que está sendo avaliada é obrigatório")
     private Long empresaId;
     private int julgamento = 0;
     

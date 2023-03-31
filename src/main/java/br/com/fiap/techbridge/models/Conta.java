@@ -17,9 +17,9 @@ public class Conta {
     //@NotNull
     //@NotEmpty
     @NotBlank(message = "A senha tem que ter ao menos 8 caracteres")
-    @Size(min = 8)
+    @Size(min = 8, message = "A senha tem que ter ao menos 8 caracteres")
     private String senha;
-    @NotBlank
+    @NotBlank(message = "O nome não foi preenchido.")
     private String nome;
     
     protected Conta(){}
