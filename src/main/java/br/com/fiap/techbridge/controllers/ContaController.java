@@ -36,17 +36,16 @@ public class ContaController {
     @PostMapping()
     public ResponseEntity<Conta> signup(@RequestBody @Valid Conta conta, BindingResult result){
         log.info("cadastrando conta: " + conta);
-        // if (result.hasErrors()) {
-        //     log.error("Erro de validação");
-        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        // }
         repository.save(conta);
         return ResponseEntity.status(HttpStatus.CREATED).body(conta);
     }
 
     // LOG IN
-    /*
     @PostMapping("login")
+    public String login(){
+        return "ainda não implementado";
+    }
+    /*
     public ResponseEntity<?> login(@RequestBody Conta conta){
         var contaEncontrada = repository.findByEmail(conta.getEmail());
         if (!contaEncontrada.isPresent())
@@ -59,22 +58,22 @@ public class ContaController {
     // DELETE
     @DeleteMapping("{id}")
     public ResponseEntity<Conta> delete(@PathVariable Long id){
-        var contaEncontrada = repository.findById(id);
-
-        if (!contaEncontrada.isPresent())
-            return ResponseEntity.notFound().build();
-        
-        repository.deleteById(id);
+        var contaEncontrada = getConta(id);
+        repository.delete(contaEncontrada);
         return ResponseEntity.noContent().build();
+    }
+
+    private Conta getConta(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+            "conta não encontrada"));
     }
 
     // SHOW
     @GetMapping("{id}")
     public ResponseEntity<?> details(@PathVariable Long id){
         log.info("buscar conta " + id);
-        var contaEncontrada = repository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "conta não encontrada"));
-        
+        var contaEncontrada = getConta(id);
         return ResponseEntity.ok(contaEncontrada);
     }
     
@@ -86,9 +85,8 @@ public class ContaController {
 
     // EDITAR
     @PutMapping("{id}")
-    public ResponseEntity<Conta> update(@PathVariable Long id, @RequestBody Conta conta){
-        repository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "conta não encontrada"));
+    public ResponseEntity<Conta> update(@PathVariable Long id, @RequestBody @Valid Conta conta, BindingResult result){
+        getConta(id);
         conta.setId(id);
         repository.save(conta); // se aquela entidade já existe com aquele id, ele faz um update
         return ResponseEntity.ok(conta);
