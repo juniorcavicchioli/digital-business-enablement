@@ -4,14 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String email;
+    //@NotNull
+    //@NotEmpty
+    @NotBlank(message = "A senha tem que ter ao menos 8 caracteres")
+    @Size(min = 8)
     private String senha;
+    @NotBlank
     private String nome;
     
     protected Conta(){}

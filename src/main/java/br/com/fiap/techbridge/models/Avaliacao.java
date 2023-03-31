@@ -4,18 +4,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Avaliacao{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @NotNull
     private Long contaId;
+    @NotNull
+    @Min(1) @Max(5)
     private int nota;
     private String comentario;
+    @NotNull
     private Long empresaId;
-    private int julgamento;
+    private int julgamento = 0;
     
     public Avaliacao(){}
 
@@ -23,7 +29,6 @@ public class Avaliacao{
         this.contaId = contaId;
         this.nota = nota;
         this.empresaId = empresaId;
-        this.julgamento = 0;
     }
 
     public Long getId() {

@@ -3,6 +3,7 @@ package br.com.fiap.techbridge.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.techbridge.models.Avaliacao;
 import br.com.fiap.techbridge.repository.AvaliacaoRepository;
-import br.com.fiap.techbridge.utils.ControllerUtils;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("techbridge/api/avaliacao")
@@ -25,12 +27,8 @@ public class AvaliacaoController {
 
     // CRIAR
     @PostMapping()
-    public ResponseEntity<Avaliacao> create(@RequestBody Avaliacao avaliacao){
+    public ResponseEntity<Avaliacao> create(@RequestBody @Valid Avaliacao avaliacao, BindingResult result){
         /* preciso impedir alguem de criar duas avaliações da mesma empresa */
-        if (avaliacao.getEmpresaId() == null ||
-            avaliacao.getContaId() == null ||
-            avaliacao.getNota() == 0)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         repository.save(avaliacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
     }
@@ -38,16 +36,16 @@ public class AvaliacaoController {
     // DELETE
     @DeleteMapping("{id}")
     public ResponseEntity<Avaliacao> delete(@PathVariable Long id){
-        var avaliacaoEncontrada = repository.findById(id);
-        if (avaliacaoEncontrada == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        repository.deleteById(id);
+        var avaliacaoEncontrada = repository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        "Erro ao apagar. Avaliação não encontrada"));
+        repository.delete(avaliacaoEncontrada);
         return ResponseEntity.noContent().build();
     }
 
     // EDITAR
     @PutMapping("{id}")
-    public ResponseEntity<Avaliacao> update(@PathVariable Long id, @RequestBody Avaliacao avaliacao){
+    public ResponseEntity<Avaliacao> update(@PathVariable Long id, @RequestBody @Valid Avaliacao avaliacao){
         var contaEncontrada = repository.findById(id);
         if (contaEncontrada.isEmpty())
             return ResponseEntity.notFound().build();
@@ -61,8 +59,10 @@ public class AvaliacaoController {
     // DETALHES
     @GetMapping("{id}")
     public ResponseEntity<?> details(@PathVariable Long id){
-        var empresaEncontrada = repository.findById(id);
-        return ControllerUtils.idExiste(empresaEncontrada);
+        var avaliacaoEncontrada = repository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+            "avaliacao não encontrada"));
+        return ResponseEntity.ok(avaliacaoEncontrada);
     }
     
     //JULGAR
