@@ -26,46 +26,39 @@ public class EmpresaController {
     
     @Autowired
     EmpresaRepository repository;
-    
-    // CADASTRAR
+
+    private Empresa getEmpresa(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada"));
+    }
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody @Valid Empresa empresa, BindingResult result){
-        
+    public ResponseEntity<Empresa> create(@RequestBody @Valid Empresa empresa, BindingResult result){
         repository.save(empresa);
         return ResponseEntity.status(HttpStatus.CREATED).body(empresa);
     }
 
-    // SHOW
     @GetMapping("{id}")
-    public ResponseEntity<?> details(@PathVariable Long id){
-        var empresaEncontrada = repository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            "empresa não encontrada"));
+    public ResponseEntity<?> show(@PathVariable Long id){
+        var empresaEncontrada = getEmpresa(id);
         return ResponseEntity.ok(empresaEncontrada);
     }
-    
-    // LISTAR
+
     @GetMapping()
     public List<Empresa> index(){
         return repository.findAll();
     }
 
-    // Editar
     @PutMapping("{id}")
     public ResponseEntity<Empresa> update(@PathVariable Long id, @RequestBody @Valid Empresa empresa, BindingResult result){
-        repository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "empresa não encontrada"));
+        getEmpresa(id);
         empresa.setId(id);
         repository.save(empresa); // se aquela entidade já existe com aquele id, ele faz um update
         return ResponseEntity.ok(empresa);
     }
 
-    // DELETE
     @DeleteMapping("{id}")
-    public ResponseEntity<Empresa> delete(@PathVariable Long id){
-        var empresaEncontrada = repository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            "Erro ao apagar. Empresa não encontrada"));
+    public ResponseEntity<Empresa> destroy(@PathVariable Long id){
+        var empresaEncontrada = getEmpresa(id);
         repository.delete(empresaEncontrada);
         return ResponseEntity.noContent().build();
     }

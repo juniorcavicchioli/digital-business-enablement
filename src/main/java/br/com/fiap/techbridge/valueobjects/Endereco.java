@@ -1,4 +1,4 @@
-package br.com.fiap.techbridge.models;
+package br.com.fiap.techbridge.valueobjects;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,12 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Embeddable
 public class Endereco {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_endereco", nullable = false)
-    private Long id;
 
     @Column(length = 100)
     private String rua;
@@ -29,9 +25,6 @@ public class Endereco {
     private String estado;
     @Column(length = 50)
     private String pais;
-    @Column(length = 8)
+    @Column(length = 9)
     private String cep;
-
-    @OneToOne(mappedBy = "idEndereco")
-    private Empresa empresa;
 }

@@ -1,5 +1,6 @@
 package br.com.fiap.techbridge.models;
 
+import br.com.fiap.techbridge.valueobjects.Endereco;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -18,20 +19,19 @@ public class Empresa{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_empresa", nullable = false)
     private Long id;
-    @NotBlank(message = "A empresa tem que possuir uma razão social (nome público)")
-    @Column(name = "razao_social", nullable = false, length = 50)
-    private String razaoSocial;
-    @Column(length = 50)
+    @NotBlank(message = "A empresa tem que possuir um nome")
+    @Column(name = "nome", nullable = false, length = 50)
     private String nome;
+    @Column(name = "razao_social", length = 50)
+    private String razaoSocial;
     @NotBlank(message = "A empresa tem que possuir um ramo de atuação")
     @Column(length = 50)
     private String ramo;
     @Column(name = "cnpj", length = 18)
     private String CNPJ;
 
-    @OneToOne
-    @JoinColumn(name = "id_endereco")
-    private Endereco idEndereco;
+    @Embedded
+    private Endereco endereco;
 
     @OneToMany(mappedBy = "idEmpresa", cascade = CascadeType.ALL)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
