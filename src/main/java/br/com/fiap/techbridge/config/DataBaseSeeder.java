@@ -7,7 +7,6 @@ import br.com.fiap.techbridge.models.Avaliacao;
 import br.com.fiap.techbridge.models.Empresa;
 import br.com.fiap.techbridge.repository.AvaliacaoRepository;
 import br.com.fiap.techbridge.repository.EmpresaRepository;
-import br.com.fiap.techbridge.valueobjects.Endereco;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
