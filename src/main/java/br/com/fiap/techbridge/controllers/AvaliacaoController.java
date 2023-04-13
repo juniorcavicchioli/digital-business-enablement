@@ -25,7 +25,10 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoRepository repository;
 
-    // CRIAR
+    private Avaliacao getAvaliacao(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada"));
+    }
     @PostMapping()
     public ResponseEntity<Avaliacao> create(@RequestBody @Valid Avaliacao avaliacao, BindingResult result){
         /* preciso impedir alguem de criar duas avaliações da mesma empresa */
@@ -33,39 +36,32 @@ public class AvaliacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
     }
 
-    // DELETE
-    @DeleteMapping("{id}")
-    public ResponseEntity<Avaliacao> delete(@PathVariable Long id){
-        var avaliacaoEncontrada = repository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-        "Erro ao apagar. Avaliação não encontrada"));
-        repository.delete(avaliacaoEncontrada);
-        return ResponseEntity.noContent().build();
+    @GetMapping("{id}")
+    public ResponseEntity<?> show(@PathVariable Long id){
+        var avaliacaoEncontrada = getAvaliacao(id);
+        return ResponseEntity.ok(avaliacaoEncontrada);
     }
 
-    // EDITAR
     @PutMapping("{id}")
     public ResponseEntity<Avaliacao> update(@PathVariable Long id, @RequestBody @Valid Avaliacao avaliacao){
         var contaEncontrada = repository.findById(id);
         if (contaEncontrada.isEmpty())
             return ResponseEntity.notFound().build();
-        avaliacao.setJulgamento(contaEncontrada.get().getJulgamento());
-        avaliacao.setContaId(contaEncontrada.get().getContaId());
+        avaliacao.setJulgamentoPositivo(contaEncontrada.get().getJulgamentoPositivo());
+        avaliacao.setJulgamentoNegativo(contaEncontrada.get().getJulgamentoNegativo());
+        avaliacao.setIdConta(contaEncontrada.get().getIdConta());
         avaliacao.setId(id);
         repository.save(avaliacao);
         return ResponseEntity.ok(avaliacao);
     }
 
-    // DETALHES
-    @GetMapping("{id}")
-    public ResponseEntity<?> details(@PathVariable Long id){
-        var avaliacaoEncontrada = repository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-            "avaliacao não encontrada"));
-        return ResponseEntity.ok(avaliacaoEncontrada);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Avaliacao> delete(@PathVariable Long id){
+        var avaliacaoEncontrada = getAvaliacao(id);
+        repository.delete(avaliacaoEncontrada);
+        return ResponseEntity.noContent().build();
     }
-    
-    //JULGAR
+
     @PutMapping("{id}/{contaId}")
     public String julgar(){
         return "ainda não implementado";
