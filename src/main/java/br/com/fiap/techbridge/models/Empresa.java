@@ -1,82 +1,38 @@
 package br.com.fiap.techbridge.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Empresa{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_empresa", nullable = false)
     private Long id;
     @NotBlank(message = "A empresa tem que possuir uma razão social (nome público)")
+    @Column(name = "razao_social", nullable = false, length = 50)
     private String razaoSocial;
+    @Column(length = 50)
     private String nome;
     @NotBlank(message = "A empresa tem que possuir um ramo de atuação")
+    @Column(length = 50)
     private String ramo;
+    @Column(name = "cnpj", length = 18)
     private String CNPJ;
-    private String endereco;
 
-    protected Empresa(){}
-    
-    public Empresa(String razaoSocial, String ramo) {
-        this.razaoSocial = razaoSocial;
-        this.ramo = ramo;
-    }
+    @OneToOne
+    @JoinColumn(name = "id_endereco")
+    private Endereco idEndereco;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRazaoSocial() {
-        return razaoSocial;
-    }
-
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getRamo() {
-        return ramo;
-    }
-
-    public void setRamo(String ramo) {
-        this.ramo = ramo;
-    }
-
-    public String getCNPJ() {
-        return CNPJ;
-    }
-
-    public void setCNPJ(String cNPJ) {
-        CNPJ = cNPJ;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    @Override
-    public String toString() {
-        return "Empresa [id=" + id + ", razaoSocial=" + razaoSocial + ", nome=" + nome + ", ramo=" + ramo + ", CNPJ=" + CNPJ
-                + ", endereco=" + endereco + "]";
-    }
+    @OneToMany(mappedBy = "idEmpresa", cascade = CascadeType.ALL)
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 }

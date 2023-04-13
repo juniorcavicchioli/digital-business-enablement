@@ -1,10 +1,6 @@
 package br.com.fiap.techbridge.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -19,18 +15,27 @@ import lombok.NoArgsConstructor;
 public class Avaliacao{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_avaliacao", nullable = false)
     private Long id;
     @NotNull(message = "O id da conta que está avaliando é obrigatório")
     @Min(value=1, message = "A nota deve ter um valor entre 1 e 5")
     @Max(value=5, message = "A nota deve ter um valor entre 1 e 5")
+    @Column(length = 1)
     private int nota;
+    @Column(length = 500)
     private String comentario;
-    private int julgamento = 0;
-    
+    @Column(length = 6)
+    private int julgamentoPositivo = 0;
+    @Column(length = 6)
+    private int julgamentoNegativo = 0;
+
+    @ManyToOne
     @NotNull(message = "O id da empresa que está sendo avaliada é obrigatório")
-    private Long empresaId;
+    @JoinColumn(name = "id_empresa", nullable = false)
+    private Empresa idEmpresa;
     
     @ManyToOne
-    @NotNull(message = "A nota deve ter um valor entre 1 e 5")
-    private Conta conta;
+    @NotNull(message = "O id da conta que está avaliadando é obrigatório")
+    @JoinColumn(name = "id_conta", nullable = false)
+    private Conta idConta;
 }

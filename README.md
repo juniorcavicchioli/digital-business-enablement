@@ -22,6 +22,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
     - [Editar](#editar-avaliacao)
     - [Detalhes](#detalhes-de-avaliacao)
     - ~~[Julgar](#julgar-avaliacao)~~
+
 ### Sign up
 ---
 
@@ -29,12 +30,13 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-| email | texto | sim | email da conta|
-| senha | texto | sim | senha da conta (mínimo 8 caracteres)|
-| nome | texto | sim | nome do usuário|
-| id | longo | --- | Gerado automaticamente quando a conta é criada|
+| campo | tipo  | obrigatório | descrição                                      |
+|-------|-------|:-----------:|------------------------------------------------|
+| email | texto |     sim     | email da conta                                 |
+| senha | texto |     sim     | senha da conta (mínimo 8 caracteres)           |
+| nome  | texto |     sim     | nome do usuário                                |
+| id    | longo |     ---     | Gerado automaticamente quando a conta é criada |
+
 *Exemplo de requisição*
 ```json
 {
@@ -56,10 +58,10 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-| email | texto | sim | email da conta|
-| senha | texto | sim | senha da conta|
+| campo | tipo  | obrigatório | descrição      |
+|-------|-------|:-----------:|----------------|
+| email | texto |     sim     | email da conta |
+| senha | texto |     sim     | senha da conta |
 
 *Exemplo de requisição*
 ```json
@@ -70,11 +72,12 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 ```
 
 *Resposta*
-| código | descrição | exemplo de resposta
-|-|-|-
-|200| Dados de login encontrados e validados|
-|400| Dados inválidos| `{"mensagem": "dados inválidos"}`
-|401| Conta não encontrada| `{"mensagem": "conta não encontrada"}`
+
+| código | descrição                              | exemplo de resposta                    |
+|--------|----------------------------------------|----------------------------------------|
+| 200    | Dados de login encontrados e validados |                                        |
+| 400    | Dados inválidos                        | `{"mensagem": "dados inválidos"}`      |
+| 401    | Conta não encontrada                   | `{"mensagem": "conta não encontrada"}` |
 
 ### Excluir conta
 ---
@@ -82,10 +85,10 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-|senha | texto | sim | senha da conta|
-|contaId| longo | sim | ID da conta a ser apagada no path|
+| campo   | tipo  | obrigatório | descrição                         |
+|---------|-------|:-----------:|-----------------------------------|
+| senha   | texto |     sim     | senha da conta                    |
+| contaId | longo |     sim     | ID da conta a ser apagada no path |
 
 *Exemplo de requisição*
 ```
@@ -93,9 +96,10 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 ```
 
 *Resposta*
-| código | descrição 
-|-|-
-|204| conta apagada
+
+| código | descrição     |
+|--------|---------------|
+| 204    | conta apagada |
 
 ### Detalhes da conta
 ---
@@ -104,9 +108,9 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-|contaId| longo | sim | id da conta|
+| campo   | tipo  | obrigatório | descrição   |
+|---------|-------|:-----------:|-------------|
+| contaId | longo |     sim     | id da conta |
 
 *Exemplo de requisição*
 ```
@@ -122,10 +126,11 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 ```
 
 *Resposta*
-| código | descrição 
-|-|-
-|200| Os dados foram retornados |
-|404| Nao foi encontrada uma conta com esse ID | `{"mensagem": "conta não encontrada"}`
+
+| código | descrição                                |
+|--------|------------------------------------------|
+| 200    | Os dados foram retornados                |
+| 404    | Nao foi encontrada uma conta com esse ID |
 
 ### Listar contas
 ---
@@ -135,18 +140,20 @@ Lista todas as contas cadastradas
 
 *Exemplo de resposta*
 ```json
-{
-    "email": "exemplo@exemplo.com",
-    "senha": "123456789",
-    "nome": "Fulano",
-    "id": 1
-}
-{
-    "email": "outlook@outlook.com",
-    "senha": "987654321",
-    "nome": "Ciclano",
-    "id": 2
-}
+[
+  {
+      "email": "exemplo@exemplo.com",
+      "senha": "123456789",
+      "nome": "Fulano",
+      "id": 1
+  },
+  {
+      "email": "outlook@outlook.com",
+      "senha": "987654321",
+      "nome": "Ciclano",
+      "id": 2
+  }
+]
 ```
 
 ### Editar conta
@@ -155,12 +162,12 @@ Lista todas as contas cadastradas
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-| email | texto | sim | email da conta|
-| senha | texto | sim | senha da conta|
-| nome | texto | sim | nome do usuário|
-| id | longo | --- | ID da conta a ser editada. Atributo do path|
+| campo | tipo  | obrigatório | descrição                                   |
+|-------|-------|:-----------:|---------------------------------------------|
+| email | texto |     sim     | email da conta                              |
+| senha | texto |     sim     | senha da conta                              |
+| nome  | texto |     sim     | nome do usuário                             |
+| id    | longo |     ---     | ID da conta a ser editada. Atributo do path |
 
 *Exemplo de requisição*
 
@@ -172,10 +179,11 @@ Lista todas as contas cadastradas
 }
 ```
 *Resposta*
-| código | descrição | exemplo de resposta
-|-|-|-|
-|200| Conta editada com sucesso|
-|404| Conta não encontrada| `{"mensagem": "Conta não encontrada"}`
+
+| código | descrição                 | exemplo de resposta                    |
+|--------|---------------------------|----------------------------------------|
+| 200    | Conta editada com sucesso |                                        |
+| 404    | Conta não encontrada      | `{"mensagem": "Conta não encontrada"}` |
 
 ### Cadastrar empresa
 ---
@@ -183,13 +191,13 @@ Lista todas as contas cadastradas
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-razaoSocial| texto | sim | nome social da empresa
-nome | texto | nao | nome oficial da empresa
-ramo | texto | sim | ramo de atuação da empresa
-CNPJ | texto | nao | CNPJ da empresa
-endereco | texto | nao | endereco da empresa
+| campo       | tipo  | obrigatório | descrição                  |
+|-------------|-------|:-----------:|----------------------------|
+| razaoSocial | texto |     sim     | nome social da empresa     |
+| nome        | texto |     nao     | nome oficial da empresa    |
+| ramo        | texto |     sim     | ramo de atuação da empresa |
+| CNPJ        | texto |     nao     | CNPJ da empresa            |
+| endereco    | texto |     nao     | endereco da empresa        |
 
 O campo `empresaId` será gerado automaticamente.
 
@@ -214,10 +222,11 @@ O campo `empresaId` será gerado automaticamente.
 ```
 
 *Resposta*
-| código | descrição | exemplo de resposta
-|-|-|-|
-|201| Empresa cadastrada com sucesso| JSON da empresa com os dados alterados
-|400| Empresa já cadastrada ou dados inválidos| `{"mensagem": "dados inválidos"}`
+
+| código | descrição                                | exemplo de resposta                    |
+|--------|------------------------------------------|----------------------------------------|
+| 201    | Empresa cadastrada com sucesso           | JSON da empresa com os dados alterados |
+| 400    | Empresa já cadastrada ou dados inválidos | `{"mensagem": "dados inválidos"}`      |
 
 ### Detalhes da empresa
 ---
@@ -226,9 +235,9 @@ O campo `empresaId` será gerado automaticamente.
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-|empresaId| longo | sim | id da empresa|
+| campo     | tipo  | obrigatório | descrição     |
+|-----------|-------|:-----------:|---------------|
+| empresaId | longo |     sim     | id da empresa |
 
 *Exemplo de resposta*
 ```json
@@ -254,22 +263,24 @@ Caso o nome ou CNPJ da empresa estejam disponíveis, o servidor também os retor
 
 *Exemplo de resposta*
 ```json
-{
-  "id": 1,
-  "razaoSocial": "The Code of Duty",
-  "nome": "Techbridge LTDA",
-  "ramo": "Consultoria de TI",
-  "CNPJ": "12.345.678/0001-00",
-  "endereco": "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
-}
-{
-  "id": 2,
-  "razaoSocial": "FIAP",
-  "nome": null,
-  "ramo": "Consultoria de TI",
-  "CNPJ": null,
-  "endereco": null
-}
+[
+  {
+    "id": 1,
+    "razaoSocial": "The Code of Duty",
+    "nome": "Techbridge LTDA",
+    "ramo": "Consultoria de TI",
+    "CNPJ": "12.345.678/0001-00",
+    "endereco": "Rua Advanced Warfare, 1, São Paulo-SP, 12345-123"
+  },
+  {
+    "id": 2,
+    "razaoSocial": "FIAP",
+    "nome": null,
+    "ramo": "Consultoria de TI",
+    "CNPJ": null,
+    "endereco": null
+  }
+]
 ```
 
 ### Excluir empresa
@@ -294,13 +305,13 @@ Caso o nome ou CNPJ da empresa estejam disponíveis, o servidor também os retor
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-razaoSocial| texto | sim | nome social da empresa
-nome | texto | nao | nome oficial da empresa
-ramo | texto | sim | ramo de atuação da empresa
-CNPJ | texto | nao | CNPJ da empresa
-endereco | texto | nao | endereco da empresa
+| campo       | tipo  | obrigatório | descrição                  |
+|-------------|-------|:-----------:|----------------------------|
+| razaoSocial | texto |     sim     | nome social da empresa     |
+| nome        | texto |     nao     | nome oficial da empresa    |
+| ramo        | texto |     sim     | ramo de atuação da empresa |
+| CNPJ        | texto |     nao     | CNPJ da empresa            |
+| endereco    | texto |     nao     | endereco da empresa        |
 
 *Exemplo de requisição*
 ```json
@@ -326,10 +337,11 @@ endereco | texto | nao | endereco da empresa
 ```
 
 *Resposta*
-| código | descrição | exemplo de resposta
-|-|-|-|
-|200| Empresa editada | JSON da empresa com os dados alterados
-|404| Empresa não encontrada | `{"mensagem": "empresa não encontrada"}`
+
+| código | descrição              | exemplo de resposta                      |
+|--------|------------------------|------------------------------------------|
+| 200    | Empresa editada        | JSON da empresa com os dados alterados   |
+| 404    | Empresa não encontrada | `{"mensagem": "empresa não encontrada"}` |
 
 ### Criar avaliacao
 
@@ -337,13 +349,13 @@ endereco | texto | nao | endereco da empresa
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-contaId | longo | sim | ID da conta que está avaliando
-nota | inteiro | sim | nota da avaliação (entre 1 e 5)
-comentario | texto | nao | justificativa para a nota dada pelo usuário
-empresaId | longo | sim | ID da empresa avaliada
-julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários. Valor inicial é 0.
+| campo      | tipo    | obrigatório | descrição                                                                 |
+|------------|---------|:-----------:|---------------------------------------------------------------------------|
+| contaId    | longo   |     sim     | ID da conta que está avaliando                                            |
+| nota       | inteiro |     sim     | nota da avaliação (entre 1 e 5)                                           |
+| comentario | texto   |     nao     | justificativa para a nota dada pelo usuário                               |
+| empresaId  | longo   |     sim     | ID da empresa avaliada                                                    |
+| julgamento | inteiro |     sim     | Status atual da avaliação julgada por outros usuários. Valor inicial é 0. |
 
 O campo `avaliacaoId` é do tipo longo e obrigatório. Ele é gerado automaticamente.
 
@@ -359,11 +371,12 @@ O campo `avaliacaoId` é do tipo longo e obrigatório. Ele é gerado automaticam
 ```
 
 *Resposta*
-| código | descrição | exemplo de resposta
-|-|-|-
-|201| Avaliação criada com sucesso.|
-|400| Campos obrigatórios não preenchidos ou valores inválidos | `{"mensagem": "dados inválidos"}`
-|401| Usuário já avaliou essa empresa|
+
+| código | descrição                                                | exemplo de resposta               |
+|--------|----------------------------------------------------------|-----------------------------------|
+| 201    | Avaliação criada com sucesso.                            |                                   |
+| 400    | Campos obrigatórios não preenchidos ou valores inválidos | `{"mensagem": "dados inválidos"}` |
+| 401    | Usuário já avaliou essa empresa                          |                                   |
 
 ### Excluir avaliacao
 ---
@@ -371,14 +384,14 @@ O campo `avaliacaoId` é do tipo longo e obrigatório. Ele é gerado automaticam
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-|contaId| longo | sim | id da conta|
+| campo   | tipo  | obrigatório | descrição   |
+|---------|-------|:-----------:|-------------|
+| contaId | longo |     sim     | id da conta |
 
 *Exemplo de requisição*
 ```json
 {
-    "contaId": 1,
+    "contaId": 1
 }
 ```
 
@@ -394,14 +407,14 @@ O campo `avaliacaoId` é do tipo longo e obrigatório. Ele é gerado automaticam
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-avaliacaoId| longo |sim|ID da avaliação que será editada
-contaId | longo | sim | ID da conta dona da avaliação
-nota | inteiro | sim | nota da avaliação (entre 1 e 5)
-comentario | texto | nao | justificativa para a nota dada pelo usuário
-empresaId | longo | sim | ID da empresa avaliada
-julgamento | inteiro | sim | Status atual da avaliação julgada por outros usuários. Ele é mantido o mesmo de antes da edição.
+| campo       | tipo    | obrigatório | descrição                                                                                        |
+|-------------|---------|:-----------:|--------------------------------------------------------------------------------------------------|
+| avaliacaoId | longo   |     sim     | ID da avaliação que será editada                                                                 |
+| contaId     | longo   |     sim     | ID da conta dona da avaliação                                                                    |
+| nota        | inteiro |     sim     | nota da avaliação (entre 1 e 5)                                                                  |
+| comentario  | texto   |     nao     | justificativa para a nota dada pelo usuário                                                      |
+| empresaId   | longo   |     sim     | ID da empresa avaliada                                                                           |
+| julgamento  | inteiro |     sim     | Status atual da avaliação julgada por outros usuários. Ele é mantido o mesmo de antes da edição. |
 
 *Exemplo de requisição*
 ```json
@@ -414,12 +427,12 @@ julgamento | inteiro | sim | Status atual da avaliação julgada por outros usu�
 ```
 
 *Resposta*
-| código | descrição | exemplo de resposta
-|-|-|-
-|200| Avaliação editada|
-|401| usuário não autorizado|
-|400| nenhum campo preenchido| `{"mensagem": "dados inválidos"}`
 
+| código | descrição               | exemplo de resposta               |
+|--------|-------------------------|-----------------------------------|
+| 200    | Avaliação editada       |                                   |
+| 401    | usuário não autorizado  |                                   |
+| 400    | nenhum campo preenchido | `{"mensagem": "dados inválidos"}` |
 
 ### Detalhes de avaliacao
 
@@ -450,11 +463,11 @@ Aumenta ou diminui o julgamento de uma avaliação
 
 *Campos de requisição*
 
-| campo | tipo | obrigatório | descrição|
-| - |-|:-:|-|
-avaliacaoId| longo | sim | ID da avaliação que está sendo julgada
-contaId | longo | sim | ID da conta que está julgando
-aumentar| boolean | sim | Indica se o julgamento deve ser aumentado (`true`) ou diminuído (`false`). Note que o aumento ou diminuição se refere à contagem total de julgamentos da avaliação, e não à avaliação em si.
+| campo       | tipo    | obrigatório | descrição                                                                                                                                                                                    |
+|-------------|---------|:-----------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| avaliacaoId | longo   |     sim     | ID da avaliação que está sendo julgada                                                                                                                                                       |
+| contaId     | longo   |     sim     | ID da conta que está julgando                                                                                                                                                                |
+| aumentar    | boolean |     sim     | Indica se o julgamento deve ser aumentado (`true`) ou diminuído (`false`). Note que o aumento ou diminuição se refere à contagem total de julgamentos da avaliação, e não à avaliação em si. |
 
 *Exemplo de requisição*
 ```json
@@ -464,9 +477,10 @@ aumentar| boolean | sim | Indica se o julgamento deve ser aumentado (`true`) ou 
 ```
 
 *Resposta*
-| código | descrição | exemplo de mensagem de reposta
-|-|-|-|
-|200| Julgamento aumentado ou diminuido com sucesso.| `{"mensagem": "Julgamento aumentado com sucesso"}`
+
+| código | descrição                                      | exemplo de mensagem de reposta                     |
+|--------|------------------------------------------------|----------------------------------------------------|
+| 200    | Julgamento aumentado ou diminuido com sucesso. | `{"mensagem": "Julgamento aumentado com sucesso"}` |
 
 ## Autores
 
