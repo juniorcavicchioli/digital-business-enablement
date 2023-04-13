@@ -2,6 +2,12 @@
 
 Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida para avaliação da disciplina Digital Business Enablement.
 
+## Modelo do banco de dados
+
+<div align="center">
+    <img src="ModeloLogico.png" alt="Modelo Lógico do BD">
+</div>
+
 ## Endpoints
 - Conta
     - [Sign up](#sign-up)
