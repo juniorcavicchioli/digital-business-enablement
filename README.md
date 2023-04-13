@@ -37,6 +37,7 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
 | nome  | texto |     sim     | nome do usuário                                |
 | id    | longo |     ---     | Gerado automaticamente quando a conta é criada |
 
+
 *Exemplo de requisição*
 ```json
 {
