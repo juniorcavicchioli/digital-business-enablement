@@ -8,7 +8,8 @@ Uma API para o sistema de avaliação de empresas e negócios sendo desenvolvida
     <img src="ModeloLogico.png" alt="Modelo Lógico do BD">
 </div>
 
-## Endpoints
+## Endpoints ~DESATUALIZADO~
+
 - Conta
     - [Sign up](#sign-up)
     - ~~[Log in](#log-in)~~
