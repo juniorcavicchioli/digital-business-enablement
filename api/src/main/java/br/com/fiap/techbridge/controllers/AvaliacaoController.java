@@ -49,7 +49,7 @@ public class AvaliacaoController {
             return ResponseEntity.notFound().build();
         avaliacao.setJulgamentoPositivo(contaEncontrada.get().getJulgamentoPositivo());
         avaliacao.setJulgamentoNegativo(contaEncontrada.get().getJulgamentoNegativo());
-        avaliacao.setIdConta(contaEncontrada.get().getIdConta());
+        avaliacao.setConta(contaEncontrada.get().getConta());
         avaliacao.setId(id);
         repository.save(avaliacao);
         return ResponseEntity.ok(avaliacao);

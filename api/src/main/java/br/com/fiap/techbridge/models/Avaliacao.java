@@ -32,10 +32,10 @@ public class Avaliacao{
     @ManyToOne
     @NotNull(message = "O id da empresa que está sendo avaliada é obrigatório")
     @JoinColumn(name = "id_empresa", nullable = false)
-    private Empresa idEmpresa;
+    private Empresa empresa;
     
     @ManyToOne
     @NotNull(message = "O id da conta que está avaliadando é obrigatório")
     @JoinColumn(name = "id_conta", nullable = false)
-    private Conta idConta;
+    private Conta conta;
 }

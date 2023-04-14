@@ -31,6 +31,6 @@ public class Conta {
     @Column(length = 50)
     private String nome;
 
-    @OneToMany(mappedBy = "idConta", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 }

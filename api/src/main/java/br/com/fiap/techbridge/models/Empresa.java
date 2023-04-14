@@ -28,11 +28,11 @@ public class Empresa{
     @Column(length = 50)
     private String ramo;
     @Column(name = "cnpj", length = 18)
-    private String CNPJ;
+    private String cnpj;
 
     @Embedded
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "idEmpresa", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 }
