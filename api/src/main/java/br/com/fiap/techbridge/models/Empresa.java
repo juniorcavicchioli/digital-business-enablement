@@ -4,6 +4,7 @@ import br.com.fiap.techbridge.valueobjects.Endereco;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class Empresa{
     @Id
@@ -33,6 +35,6 @@ public class Empresa{
     @Embedded
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
-    private List<Avaliacao> avaliacoes = new ArrayList<>();
+//    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+//    private List<Avaliacao> avaliacoes = new ArrayList<>();
 }

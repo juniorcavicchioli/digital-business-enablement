@@ -7,6 +7,7 @@ import br.com.fiap.techbridge.models.Avaliacao;
 import br.com.fiap.techbridge.models.Empresa;
 import br.com.fiap.techbridge.repository.AvaliacaoRepository;
 import br.com.fiap.techbridge.repository.EmpresaRepository;
+import br.com.fiap.techbridge.valueobjects.Endereco;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -24,53 +25,133 @@ public class DataBaseSeeder implements CommandLineRunner{
     @Autowired
     AvaliacaoRepository avaliacaoRepository;
 
-    private final List<Avaliacao> avaliacaoList = new ArrayList<>();
-
-    Conta c1 = new Conta(1L, "example@example.com","12345678","Fulano", avaliacaoList);
-    Conta c2 = new Conta(2L, "two@example.com","87654321","Deltrano", avaliacaoList);
-    Conta c3 = new Conta(3L, "three@example.com","minhasenha","Beltrano", avaliacaoList);
-    Conta c4 = new Conta(4L, "four@example.com","password","Robson", avaliacaoList);
-    Conta c5 = new Conta(5L, "five@example.com","anotherpassword","Lucas", avaliacaoList);
-    Conta c6 = new Conta(6L, "six@example.com","password","Adilson", avaliacaoList);
-    Conta c7 = new Conta(7L, "seven@example.com","password","Carlos", avaliacaoList);
-    Conta c8 = new Conta(8L, "eight@example.com","password","Jesus", avaliacaoList);
-    Conta c9 = new Conta(9L, "nine@example.com","password","Maomé", avaliacaoList);
-    Conta c10 = new Conta(10L, "ten@example.com","password","Maria", avaliacaoList);
-
-    // new Endereco("Av. Lins de Vasconselos", "1222", null, "Cambuci", "São Paulo", "SP", "Brasil", "01538-001", null)
-    Empresa e1 = new Empresa(1L, "FIAP - Aclimação", "VSTP Educacao S.A.", "Instituição acadêmica", "11.319.526/0007-40", null, avaliacaoList);
-    Empresa e2 = new Empresa(2L, "Mercearia do Zé", null, "Varejo alimentício", null, null, avaliacaoList);
-    Empresa e3 = new Empresa(3L, "Mercadinho do Manuel", null, "Varejo alimentício", null, null, avaliacaoList);
-    Empresa e4 = new Empresa(4L, "Cabeleireiro", null, "Beleza", null, null, avaliacaoList);
-    Empresa e5 = new Empresa(5L, "Salão de beleza", null, "Beleza", null, null, avaliacaoList);
-
     @Override
     public void run(String... args) throws Exception {
 
-        contaRepository.saveAll(List.of(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10));
-        empresaRepository.saveAll(List.of(e1,e2,e3,e4,e5));
-        avaliacaoRepository.saveAll(List.of(
-                new Avaliacao(1L, 1, "Lorem ipsum dolor sit amet", 0, 0, e1, c1),
-                new Avaliacao(2L, 1, "Não gostei", 0, 0, e1, c2),
-                new Avaliacao(3L, 2, "Desagradável", 0, 0, e1, c3),
-                new Avaliacao(4L, 2, "Feio", 0, 0, e1, c4),
-                new Avaliacao(5L, 5, "Muito bom", 0, 0, e1, c5),
-                new Avaliacao(6L, 1, "O filme do Pelé é melhor", 0, 0, e2, c1),
-                new Avaliacao(7L, 1, "Horrível", 0, 0, e2, c2),
-                new Avaliacao(8L, 2, "De bom só os funcionários bonitos", 0, 0, e2, c3),
-                new Avaliacao(9L, 2, "", 0, 0, e2, c4),
-                new Avaliacao(10L, 5, "", 0, 0, e2, c5),
-                new Avaliacao(11L, 3, "", 0, 0, e3, c1),
-                new Avaliacao(12L, 3, "", 0, 0, e3, c2),
-                new Avaliacao(13L, 4, "", 0, 0, e3, c3),
-                new Avaliacao(14L, 4, "", 0, 0, e3, c4),
-                new Avaliacao(15L, 5, "", 0, 0, e3, c5),
-                new Avaliacao(16L, 3, "", 0, 0, e4, c1),
-                new Avaliacao(17L, 3, "", 0, 0, e4, c2),
-                new Avaliacao(18L, 4, "", 0, 0, e4, c3),
-                new Avaliacao(19L, 4, "", 0, 0, e4, c4),
-                new Avaliacao(20L, 5, "", 0, 0, e4, c5)
-        ));
+        List<Conta> c = generateContas();
+        List<Empresa> e = generateEmpresas();
+        List<Avaliacao> a = generateAvaliacoes(c, e);
+
+        contaRepository.saveAll(c);
+        empresaRepository.saveAll(e);
+        avaliacaoRepository.saveAll(a);
     }
-    
+    private static List<Avaliacao> generateAvaliacoes(List<Conta> c, List<Empresa> e){
+        List<Avaliacao> avaliacoes = new ArrayList<>();
+
+        avaliacoes.addAll(List.of(
+                Avaliacao.builder().nota(1).comentario("Lorem ipsum dolor sit amet")
+                        .empresa(e.get(0)).conta(c.get(0)).build(),
+                Avaliacao.builder().nota(1).comentario("Não gostei")
+                        .empresa(e.get(0)).conta(c.get(1)).build(),
+                Avaliacao.builder().nota(2).comentario("Desagradável")
+                        .empresa(e.get(0)).conta(c.get(2)).build(),
+                Avaliacao.builder().nota(2).comentario("Feio")
+                        .empresa(e.get(0)).conta(c.get(3)).build(),
+                Avaliacao.builder().nota(5).comentario("Muito bom")
+                        .empresa(e.get(0)).conta(c.get(4)).build(),
+                Avaliacao.builder().nota(1).comentario("O filme do Pelé é melhor")
+                        .empresa(e.get(1)).conta(c.get(0)).build(),
+                Avaliacao.builder().nota(1).comentario("Horrível")
+                        .empresa(e.get(1)).conta(c.get(1)).build(),
+                Avaliacao.builder().nota(2).comentario("De bom só os funcionários bonitos")
+                        .empresa(e.get(1)).conta(c.get(2)).build(),
+                Avaliacao.builder().nota(2).comentario("")
+                        .empresa(e.get(1)).conta(c.get(3)).build(),
+                Avaliacao.builder().nota(5).comentario("")
+                        .empresa(e.get(1)).conta(c.get(4)).build(),
+                Avaliacao.builder().nota(3).comentario("")
+                        .empresa(e.get(2)).conta(c.get(0)).build(),
+                Avaliacao.builder().nota(3).comentario("")
+                        .empresa(e.get(2)).conta(c.get(1)).build(),
+                Avaliacao.builder().nota(4).comentario("")
+                        .empresa(e.get(2)).conta(c.get(2)).build(),
+                Avaliacao.builder().nota(4).comentario("")
+                        .empresa(e.get(2)).conta(c.get(3)).build(),
+                Avaliacao.builder().nota(5).comentario("")
+                        .empresa(e.get(2)).conta(c.get(4)).build(),
+                Avaliacao.builder().nota(3).comentario("")
+                        .empresa(e.get(3)).conta(c.get(0)).build(),
+                Avaliacao.builder().nota(3).comentario("")
+                        .empresa(e.get(3)).conta(c.get(1)).build(),
+                Avaliacao.builder().nota(4).comentario("")
+                        .empresa(e.get(3)).conta(c.get(2)).build(),
+                Avaliacao.builder().nota(4).comentario("")
+                        .empresa(e.get(3)).conta(c.get(3)).build(),
+                Avaliacao.builder().nota(5).comentario("")
+                        .empresa(e.get(3)).conta(c.get(4)).build()
+        ));
+        return avaliacoes;
+    }
+    private static List<Empresa> generateEmpresas(){
+        List<Empresa> empresas = new ArrayList<>();
+
+        Endereco endereco = Endereco.builder()
+                .rua("Av. Lins de Vasconselos")
+                .numero("1222")
+                .bairro("Cambuci")
+                .cidade("São Paulo")
+                .estado("SP")
+                .pais("Brasil")
+                .cep("01538-001")
+                .build();
+
+        empresas.addAll(List.of(
+                Empresa.builder()
+                        .endereco(endereco)
+                        .nome("FIAP - Aclimação")
+                        .razaoSocial("VSTP Educacao S.A.")
+                        .ramo("Instituição acadêmica")
+                        .cnpj("11.319.526/0007-40")
+                        .build(),
+                Empresa.builder()
+                        .nome("Mercearia do Zé")
+                        .ramo("Varejo alimentício")
+                        .build(),
+                Empresa.builder()
+                        .nome("Mercadinho do Manuel")
+                        .ramo("Varejo alimentício")
+                        .build(),
+                Empresa.builder()
+                        .nome("Cabeleireiro")
+                        .ramo("Beleza")
+                        .build(),
+                Empresa.builder()
+                        .nome("Salão de beleza")
+                        .ramo("Beleza")
+                        .build()
+        ));
+        return empresas;
+    }
+    private static List<Conta> generateContas(){
+        List<Conta> contas = new ArrayList<>();
+        contas.addAll(List.of(
+                Conta.builder()
+                .email("example@example.com")
+                .senha("12345678")
+                .nome("Fulano")
+                .build(),
+                Conta.builder()
+                .email("two@example.com")
+                .senha("87654321")
+                .nome("Deltrano")
+                .build(),
+                Conta.builder()
+                .email("three@example.com")
+                .senha("minhasenha")
+                .nome("Beltrano")
+                .build(),
+                Conta.builder()
+                .email("four@example.com")
+                .senha("password")
+                .nome("Robson")
+                .build(),
+            Conta.builder()
+                .email("five@example.com")
+                .senha("anotherpassword")
+                .nome("Lucas")
+                .build()
+                ));
+        return contas;
+    }
 }
