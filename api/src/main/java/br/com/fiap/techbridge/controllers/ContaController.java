@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,33 +26,39 @@ public class ContaController {
     @Autowired
     ContaRepository repository;
 
+    @Autowired
+    PagedResourcesAssembler<Object> assembler;
+
     private Conta getConta(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conta não encontrada"));
     }
     @PostMapping()
-    public ResponseEntity<Conta> signup(@RequestBody @Valid Conta conta, BindingResult result){
+    public ResponseEntity<EntityModel<Conta>> signup(@RequestBody @Valid Conta conta, BindingResult result){
         repository.save(conta);
-        return ResponseEntity.status(HttpStatus.CREATED).body(conta);
+        return ResponseEntity
+                .created(conta.toEntityModel().getRequiredLink("self").toUri())
+                .body(conta.toEntityModel());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> show(@PathVariable Long id){
-        var contaEncontrada = getConta(id);
-        return ResponseEntity.ok(contaEncontrada);
+    public EntityModel<Conta> show(@PathVariable Long id){
+        var conta = getConta(id);
+        return conta.toEntityModel();
     }
 
     @GetMapping()
-    public Page<Conta> index(@PageableDefault(size = 5) Pageable pageable){ //@RequestParam String busca
-        return repository.findAll(pageable);
+    public PagedModel<EntityModel<Object>> index(@PageableDefault(size = 5) Pageable pageable){ //@RequestParam String busca
+        Page<Conta> contas = repository.findAll(pageable);
+        return assembler.toModel(contas.map(Conta::toEntityModel));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Conta> update(@PathVariable Long id, @RequestBody @Valid Conta conta, BindingResult result){
+    public EntityModel<Conta> update(@PathVariable Long id, @RequestBody @Valid Conta conta, BindingResult result){
         getConta(id);
         conta.setId(id);
         repository.save(conta);
-        return ResponseEntity.ok(conta);
+        return conta.toEntityModel();
     }
 
     @DeleteMapping("{id}")
