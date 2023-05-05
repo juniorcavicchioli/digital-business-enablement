@@ -3,6 +3,9 @@ package br.com.fiap.techbridge.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,57 +27,56 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoRepository repository;
 
+    @Autowired
+    PagedResourcesAssembler<Object> assembler;
+
     private Avaliacao getAvaliacao(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada"));
     }
     @PostMapping()
-    public ResponseEntity<Avaliacao> create(@RequestBody @Valid Avaliacao avaliacao, BindingResult result){
+    public ResponseEntity<EntityModel<Avaliacao>> create(@RequestBody @Valid Avaliacao avaliacao, BindingResult result){
         /* preciso impedir alguem de criar duas avaliações da mesma empresa */
         repository.save(avaliacao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
+        return ResponseEntity
+                .created(avaliacao.toEntityModel().getRequiredLink("self").toUri())
+                .body(avaliacao.toEntityModel());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> show(@PathVariable Long id){
-        var avaliacaoEncontrada = getAvaliacao(id);
-        return ResponseEntity.ok(avaliacaoEncontrada);
+    public EntityModel<Avaliacao> show(@PathVariable Long id){
+        var avaliacao = getAvaliacao(id);
+        return avaliacao.toEntityModel();
     }
 
     @GetMapping()
-    public Page<Avaliacao> index(@RequestParam(required = false) String empresa,
-                                 @RequestParam(required = false) String conta,
-                                 @PageableDefault(size=5) Pageable pageable){
+    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String empresa,
+                                                 @RequestParam(required = false) String conta,
+                                                 @PageableDefault(size=5) Pageable pageable){
         log.info(empresa, conta);
-        if (empresa == null) {
-            if (conta == null)
-                return repository.findAll(pageable);
-            return repository.findByContaId(conta, pageable);
-        }
-        return repository.findByEmpresaId(empresa, pageable);
-        // outra lógica para o mesmo problema
-//        if (conta == null && empresa == null)
-//            return repository.findAll(pageable);
-//        if (conta == null)
-//            return repository.findByEmpresaId(empresa, pageable);
-//        return repository.findByContaId(conta, pageable);
+        Page<Avaliacao> avaliacoes = empresa == null
+                ? conta == null
+                ? repository.findAll(pageable)
+                : repository.findByContaId(conta, pageable)
+                : repository.findByEmpresaId(empresa, pageable);
+        return assembler.toModel(avaliacoes.map(Avaliacao::toEntityModel));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Avaliacao> update(@PathVariable Long id, @RequestBody @Valid Avaliacao avaliacao){
-        var contaEncontrada = repository.findById(id);
-        if (contaEncontrada.isEmpty())
+    public ResponseEntity<EntityModel<Avaliacao>> update(@PathVariable Long id, @RequestBody @Valid Avaliacao avaliacao){
+        var avaliacaoEncontrada = repository.findById(id);
+        if (avaliacaoEncontrada.isEmpty())
             return ResponseEntity.notFound().build();
-        avaliacao.setJulgamentoPositivo(contaEncontrada.get().getJulgamentoPositivo());
-        avaliacao.setJulgamentoNegativo(contaEncontrada.get().getJulgamentoNegativo());
-        avaliacao.setConta(contaEncontrada.get().getConta());
+        avaliacao.setJulgamentoPositivo(avaliacaoEncontrada.get().getJulgamentoPositivo());
+        avaliacao.setJulgamentoNegativo(avaliacaoEncontrada.get().getJulgamentoNegativo());
+        avaliacao.setConta(avaliacaoEncontrada.get().getConta());
         avaliacao.setId(id);
         repository.save(avaliacao);
-        return ResponseEntity.ok(avaliacao);
+        return ResponseEntity.ok(avaliacao.toEntityModel());
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Avaliacao> delete(@PathVariable Long id){
+    public ResponseEntity<Avaliacao> destroy(@PathVariable Long id){
         var avaliacaoEncontrada = getAvaliacao(id);
         repository.delete(avaliacaoEncontrada);
         return ResponseEntity.noContent().build();
